@@ -7,7 +7,8 @@ function Contact(first, last) {
 Contact.prototype.fullName = function() {
   return this.firstName + ' ' + this.lastName;
 }
-function Address (street, city, state) {
+function Address (type, street, city, state) {
+  this.type = type;
   this.street = street;
   this.city = city;
   this.state = state;
@@ -17,10 +18,20 @@ function Address (street, city, state) {
 $(document).ready(function() {
   $("#add-address").click(function() {
     $("#new-addresses").append('<div class="new-address">' +
-                                 '<div class="form-group">' +
-                                   '<label for="new-street">Street</label>' +
-                                   '<input type="text" class="form-control new-street">' +
-                                 '</div>' +
+                                '<div class="form-group">' +
+                                  '<label>Type</label>' +
+                                  '<select class="form-control" id="address-type">' +
+                                    '<option value="Residential">Residential</option>' +
+                                    '<option value="Business">Business</option>' +
+                                    '<option value="Vacation">Vacation</option>' +
+                                    '<option value="P.O. Box">P.O. Box</option>' +
+                                    '<option value="Super Secret Lab">Super Secret Lab</option>' +
+                                  '</select>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                  '<label for="new-street">Street</label>' +
+                                  '<input type="text" class="form-control new-street">' +
+                                '</div>' +
                                  '<div class="form-group">' +
                                    '<label for="new-city">City</label>' +
                                    '<input type="text" class="form-control new-city">' +
@@ -39,10 +50,11 @@ $(document).ready(function() {
     var newContact = new Contact(inputtedFirstName, inputtedLastName);
 
     $(".new-address").each(function() {
+      var inputtedType = $(this).find('#address-type').val();
       var inputtedStreet = $(this).find("input.new-street").val();
       var inputtedCity = $(this).find("input.new-city").val();
       var inputtedState = $(this).find("input.new-state").val();
-      var newAddress = new Address(inputtedStreet, inputtedCity, inputtedState);
+      var newAddress = new Address(inputtedType, inputtedStreet, inputtedCity, inputtedState);
       newContact.addresses.push(newAddress);
     });
 
@@ -56,7 +68,7 @@ $(document).ready(function() {
       $(".last-name").text(newContact.lastName);
       $("ul#addresses").text("");
       newContact.addresses.forEach(function(address) {
-        $("ul#addresses").append("<li>" + address.street + ", " + address.city + " " + address.state + "</li>");
+        $("ul#addresses").append("<li>" + address.type + ", " + address.street + ", " + address.city + " " + address.state + "</li>");
       });
     });
 
@@ -67,6 +79,16 @@ $(document).ready(function() {
     $("input.new-state").val('');
     $("#new-addresses").empty();
     $("#new-addresses").append('<div class="new-address">' +
+                                '<div class="form-group">' +
+                                  '<label>Type</label>' +
+                                  '<select class="form-control" id="address-type">' +
+                                    '<option value="Residential">Residential</option>' +
+                                    '<option value="Business">Business</option>' +
+                                    '<option value="Vacation">Vacation</option>' +
+                                    '<option value="P.O. Box">P.O. Box</option>' +
+                                    '<option value="Super Secret Lab">Super Secret Lab</option>' +
+                                  '</select>' +
+                                  '</div>' +
                                  '<div class="form-group">' +
                                    '<label for="new-street">Street</label>' +
                                    '<input type="text" class="form-control new-street">' +
